@@ -1,0 +1,26 @@
+name: Build Docker Image
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build image
+        run: docker build . -t crawling-script:1.0
+
+      - name: Print image size
+        run: |
+          docker images crawling-script:1.0
+          docker image inspect crawling-script:1.0 --format='{{.Size}}'
